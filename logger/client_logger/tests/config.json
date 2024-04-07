@@ -1,0 +1,24 @@
+{
+  "log": {
+    "format" : "[%d %t][%s] %m",
+    "information": {
+      "console" : false,
+      "path" : [
+        "info_log.txt",
+        "inf.txt"
+      ]
+    },
+    "warning": {
+      "console" : true,
+      "path" : [
+        "warning_log.txt"
+      ]
+    },
+    "error": {
+      "console" : true,
+      "path" : [
+        "error_log.txt"
+      ]
+    }
+  }
+}
