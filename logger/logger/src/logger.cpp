@@ -1,5 +1,6 @@
 #include "../include/logger.h"
 #include <iomanip>
+#include <sstream>
 
 logger const *logger::trace(
     std::string const &message) const noexcept
@@ -43,17 +44,17 @@ std::string logger::severity_to_string(
     switch (severity)
     {
         case logger::severity::trace:
-            return "TRACE";
+            return "trace";
         case logger::severity::debug:
-            return "DEBUG";
+            return "debug";
         case logger::severity::information:
-            return "INFORMATION";
+            return "information";
         case logger::severity::warning:
-            return "WARNING";
+            return "warning";
         case logger::severity::error:
-            return "ERROR";
+            return "error";
         case logger::severity::critical:
-            return "CRITICAL";
+            return "critical";
     }
 
     throw std::out_of_range("Invalid severity value");
@@ -68,3 +69,24 @@ std::string logger::current_datetime_to_string() noexcept
 
     return result_stream.str();
 }
+
+std::string logger::current_date_to_string() noexcept
+{
+    auto time = std::time(nullptr);
+
+    std::ostringstream result_stream;
+    result_stream << std::put_time(std::localtime(&time), "%d.%m.%Y");
+
+    return result_stream.str();
+}
+
+std::string logger::current_time_to_string() noexcept
+{
+    auto time = std::time(nullptr);
+
+    std::ostringstream result_straem;
+    result_straem << std::put_time(std::localtime(&time), "%H:%M:%S");
+
+    return result_straem.str();
+}
+
