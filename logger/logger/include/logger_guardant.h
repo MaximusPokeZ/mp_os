@@ -36,6 +36,7 @@ public:
 
 protected:
 
+    // Виртуальная функция для получения указателя на объект логгера
     inline virtual logger *get_logger() const = 0;
 
 };

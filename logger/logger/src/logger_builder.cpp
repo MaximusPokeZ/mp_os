@@ -30,3 +30,25 @@ logger::severity logger_builder::string_to_severity(
 
     throw std::out_of_range("invalid severity string value");
 }
+
+std::string logger_builder::severity_to_string(
+		logger::severity severity)
+{
+	switch (severity)
+	{
+		case logger::severity::trace:
+			return "trace";
+		case logger::severity::debug:
+			return "debug";
+		case logger::severity::information:
+			return "information";
+		case logger::severity::warning:
+			return "warning";
+		case logger::severity::error:
+			return "error";
+		case logger::severity::critical:
+			return "critical";
+	}
+
+	throw std::out_of_range("Invalid severity value");
+}
