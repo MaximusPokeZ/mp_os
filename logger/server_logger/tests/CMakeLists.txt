@@ -34,8 +34,32 @@ target_link_libraries(
 set_target_properties(
         mp_os_lggr_srvr_lggr_tests PROPERTIES
         LANGUAGES CXX
-        CXX_STANDARD 14
+        CXX_STANDARD 23
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
         VERSION 1.0
         DESCRIPTION "server logger implementation library tests")
+
+add_executable(
+        mp_os_lggr_srvr_lggr_test_srvr
+        server.cpp)
+target_link_libraries(
+        mp_os_lggr_srvr_lggr_test_srvr
+        PUBLIC
+        mp_os_cmmn)
+target_link_libraries(
+        mp_os_lggr_srvr_lggr_test_srvr
+        PUBLIC
+        mp_os_lggr_lggr)
+target_link_libraries(
+        mp_os_lggr_srvr_lggr_test_srvr
+        PUBLIC
+        mp_os_lggr_srvr_lggr)
+set_target_properties(
+        mp_os_lggr_srvr_lggr_test_srvr PROPERTIES
+        LANGUAGES CXX
+        CXX_STANDARD 23
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+        VERSION 1.0
+        DESCRIPTION "server logger")
