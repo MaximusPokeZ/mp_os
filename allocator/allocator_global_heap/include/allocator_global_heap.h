@@ -55,7 +55,9 @@ private:
 
 private:
     
-    inline std::string get_typename() const noexcept override;
+    [[nodiscard]] inline std::string get_typename() const noexcept override;
+
+	static inline std::string get_block_dump(char* at, size_t size);
 
 public:
 

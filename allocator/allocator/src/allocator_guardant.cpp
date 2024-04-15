@@ -4,7 +4,7 @@ void *allocator_guardant::allocate_with_guard(
     size_t value_size,
     size_t values_count) const
 {
-    allocator *target_allocator = get_allocator();
+    allocator *target_allocator = get_allocator(); // если nullptr - выделяем из кучи, иначе вызываем allocate для выделения памяти
     return target_allocator == nullptr
         ? ::operator new(value_size * values_count)
         : target_allocator->allocate(value_size, values_count);
