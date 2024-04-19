@@ -104,7 +104,6 @@ private:
 	std::string get_blocks_info_to_string(const std::vector<allocator_test_utils::block_info>& vector) const noexcept;
 
 	std::string get_dump(char* at, size_t size);
-
 };
 
 #endif //MATH_PRACTICE_AND_OPERATING_SYSTEMS_ALLOCATOR_ALLOCATOR_BOUNDARY_TAGS_H

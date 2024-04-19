@@ -242,7 +242,7 @@ inline void* & allocator_boundary_tags::get_first_block_by_alloc() const noexcep
 	auto* ptr = reinterpret_cast<unsigned char*>(_trusted_memory);
 	ptr += sizeof(allocator*) + sizeof(logger*) + sizeof(fit_mode) + sizeof(std::mutex) + sizeof(block_size_t);
 
-	return  *reinterpret_cast<block_pointer_t*>(ptr);
+	return *reinterpret_cast<block_pointer_t*>(ptr);
 }
 
 inline allocator::block_size_t allocator_boundary_tags::get_block_size_of_meta() const noexcept
