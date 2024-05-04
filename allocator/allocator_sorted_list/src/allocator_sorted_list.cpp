@@ -197,12 +197,6 @@ void allocator_sorted_list::deallocate(
 	else
 		get_ptr_to_block_from_block(previous_free) = block_ptr;
 
-	if(previous_free != _trusted_memory && reinterpret_cast<unsigned char*>(previous_free) + get_block_size_of_meta() + get_size_block(previous_free) == block_ptr)
-	{
-		*reinterpret_cast<block_size_t *>(previous_free) = get_size_block(previous_free) + get_block_size_of_meta() + get_size_block(block_ptr);
-		auto byte_ptr = reinterpret_cast<unsigned char*>(previous_free) + sizeof(block_size_t);
-		*reinterpret_cast<block_pointer_t*>(byte_ptr) = get_ptr_to_block_from_block(block_ptr);
-	}
 
 	left_bytes += get_size_block(block_ptr);
 
@@ -213,7 +207,6 @@ void allocator_sorted_list::deallocate(
 inline void allocator_sorted_list::set_fit_mode(
 		allocator_with_fit_mode::fit_mode mode)
 {
-	std::lock_guard lock(get_mutex());
 	auto ptr = reinterpret_cast<unsigned char*>(_trusted_memory);
 	ptr += sizeof(logger*) + sizeof(allocator*);
 	*reinterpret_cast<allocator_with_fit_mode::fit_mode*>(ptr) = mode;

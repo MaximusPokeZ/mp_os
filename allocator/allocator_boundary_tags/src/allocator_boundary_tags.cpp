@@ -116,13 +116,13 @@ allocator_boundary_tags::allocator_boundary_tags(
 	switch(get_fit_mode())
 	{
 		case allocator_with_fit_mode::fit_mode::the_best_fit:
-			before_loaded_block = get_suitable(block_size, true); // Поиск наилучшего подходящего блока
+			before_loaded_block = get_suitable(block_size, true);
 			break;
 		case allocator_with_fit_mode::fit_mode::first_fit:
-			before_loaded_block = get_first_suitable(block_size);  // Поиск первого подходящего блока
+			before_loaded_block = get_first_suitable(block_size);
 			break;
 		case allocator_with_fit_mode::fit_mode::the_worst_fit:
-			before_loaded_block = get_suitable(block_size, false); // Поиск наихудшего подходящего блока
+			before_loaded_block = get_suitable(block_size, false);
 			break;
 	}
 
@@ -137,8 +137,7 @@ allocator_boundary_tags::allocator_boundary_tags(
 		cur_loaded_block = reinterpret_cast<unsigned char *>(_trusted_memory) + get_allocator_size_of_meta();
 	}
 	else {
-		cur_loaded_block = reinterpret_cast<unsigned char *>(before_loaded_block) + get_block_size_of_meta() +
-						   get_size_block(before_loaded_block);
+		cur_loaded_block = reinterpret_cast<unsigned char *>(before_loaded_block) + get_block_size_of_meta() + get_size_block(before_loaded_block);
 	}
 
 	get_allocator_block(cur_loaded_block) = this;
@@ -363,7 +362,6 @@ void* allocator_boundary_tags::get_suitable(size_t need_size, bool is_best_fit) 
 		next_block = get_next_loaded_block(current_block);
 		if (previous_block == _trusted_memory)
 			available_space = reinterpret_cast<unsigned char*>(current_block) - (reinterpret_cast<unsigned char*>(_trusted_memory) + get_allocator_size_of_meta());
-
 		else
 			available_space = reinterpret_cast<unsigned char*>(current_block) - (reinterpret_cast<unsigned char*>(previous_block) + get_size_block(previous_block) + get_block_size_of_meta());
 
