@@ -2612,11 +2612,11 @@ void binary_search_tree<tkey, tvalue>::copy_subtree(binary_search_tree::node **d
 	try{
 		allocator::construct(*dest, *src);
 	}
-	catch(...) //говно
+	catch(std::bad_alloc & ex) //говно
 	{
 		allocator_guardant::deallocate_with_guard(*dest);
 		*dest = nullptr;
-		throw;
+		throw ex;
 	}
 
 	(*dest)->right_subtree = nullptr;

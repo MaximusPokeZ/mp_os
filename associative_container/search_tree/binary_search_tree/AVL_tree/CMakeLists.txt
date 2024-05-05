@@ -4,7 +4,8 @@ project(mp_os_assctv_cntnr_srch_tr_bnr_srch_tr_AVL_tr)
 add_subdirectory(tests)
 add_library(
         mp_os_assctv_cntnr_srch_tr_bnr_srch_tr_AVL_tr
-        include/AVL_tree.h)
+        include/AVL_tree.h
+        src/ok.cpp)
 target_include_directories(
         mp_os_assctv_cntnr_srch_tr_bnr_srch_tr_AVL_tr
         PUBLIC
@@ -27,6 +28,6 @@ set_target_properties(
         DESCRIPTION "AVL tree implementation library"
         LANGUAGES CXX
         LINKER_LANGUAGE CXX
-        CXX_STANDARD 14
+        CXX_STANDARD 23
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF)
