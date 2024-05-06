@@ -101,7 +101,8 @@ bool infix_iterator_test(
 	for (auto const &item: expected_result)
 	{
 
-		if ((*it)->depth != item.depth || (*it)->key != item.key)
+		if ((*it)->depth != item.depth || (*it)->key != item.key ||
+		reinterpret_cast<typename AVL_tree<tkey, tvalue>::iterator_data const *>(*it)->subtree_height != item.subtree_height)
 		{
 			return false;
 		}
