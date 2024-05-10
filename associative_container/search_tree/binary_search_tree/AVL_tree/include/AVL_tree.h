@@ -225,8 +225,7 @@ void AVL_tree<tkey, tvalue>::node::change_balance() noexcept
 template<typename tkey, typename tvalue>
 int AVL_tree<tkey, tvalue>::node::get_balance() noexcept
 {
-	if (this == nullptr)
-		return 0;
+	if (this == nullptr) return 0;
 	size_t left_height = binary_search_tree<tkey, tvalue>::node::left_subtree ? static_cast<node*>(binary_search_tree<tkey, tvalue>::node::left_subtree)->subtree_height : 0;
 	size_t right_height = binary_search_tree<tkey, tvalue>::node::right_subtree ? static_cast<node*>(binary_search_tree<tkey, tvalue>::node::right_subtree)->subtree_height : 0;
 
