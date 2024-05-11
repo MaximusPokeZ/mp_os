@@ -336,8 +336,8 @@ void red_black_tree<tkey, tvalue>::remove_node_with_two_children(std::stack<type
 	typename binary_search_tree<tkey, tvalue>::node *leftist = (*update)->left_subtree; // cохраняем левое поддерево найденного узла
 
 	*update = previous_node;
-	static_cast<node *>(*update)->change_color(removable_color);
-	(*path.top())->left_subtree = previous_node->left_subtree == *(path.top()) ? *update : previous_node->left_subtree;
+	static_cast<node *>(*update)->change_color(removable_color); // это для послед обработки
+	(*path.top())->left_subtree = previous_node->left_subtree == *(path.top()) ? previous_node : previous_node->left_subtree;
 	(*path.top())->right_subtree = previous_node->right_subtree;
 	(*update)->right_subtree = nullptr;
 	(*update)->left_subtree = leftist;
@@ -487,7 +487,7 @@ tvalue red_black_tree<tkey, tvalue>::dispose_inside(std::stack<typename binary_s
 					typename binary_search_tree<tkey, tvalue>::node *leftist = (*update)->left_subtree;
 					typename binary_search_tree<tkey, tvalue>::node *rightist = (*update)->right_subtree;
 
-					// меняем местами отца с сыном и перекрашиваем их в противоположные цвета
+					// меняем местами отца с сыном и перекрашиваем их в противоположные цвета (спускаем удаляемый узел вниз и делаем красным)
 					*update = previous_node;
 					static_cast<node *>(*update)->change_color(node_color::RED);
 					(*path.top())->left_subtree = *update;
@@ -559,11 +559,11 @@ tvalue red_black_tree<tkey, tvalue>::dispose_inside(std::stack<typename binary_s
 
 					if (parent->left_subtree == current) // Если текущий узел является левым потомком родителя
 					{
-						if (static_cast<node *>(parent->right_subtree)->_color == node_color::RED) // Если правый потомок родителя красный
+						if (static_cast<node *>(parent->right_subtree)->_color == node_color::RED) // Если брат красный
 						{
 							binary_search_tree<tkey, tvalue>::small_left_rotation(*path.top());
 
-							// Меняем цвета узлов для соблюдения свойств красно-черного дерева
+							// Меняем цвета узлов
 							static_cast<node *>(*path.top())->change_color(node_color::BLACK);
 							static_cast<node *>((*path.top())->left_subtree)->change_color(node_color::RED);
 							path.push(&((*path.top())->left_subtree));
@@ -572,7 +572,7 @@ tvalue red_black_tree<tkey, tvalue>::dispose_inside(std::stack<typename binary_s
 
 							continue;
 						}
-						else if (static_cast<node *>(parent->right_subtree)->_color == node_color::BLACK) // Если правый потомок родителя черный
+						else if (static_cast<node *>(parent->right_subtree)->_color == node_color::BLACK) // Если брат черный
 						{
 							brother = parent->right_subtree; // Устанавливаем брата текущего узла
 
@@ -594,7 +594,7 @@ tvalue red_black_tree<tkey, tvalue>::dispose_inside(std::stack<typename binary_s
 								static_cast<node *>(brother)->change_color(node_color::RED); // Меняем цвет брата на красный
 								node_color color_of_parent = static_cast<node *>(parent)->_color; // Цвет родителя
 								static_cast<node *>(parent)->change_color(node_color::BLACK); // Меняем цвет родителя на черный
-								if (color_of_parent == node_color::BLACK) // Если цвет родителя черный
+								if (color_of_parent == node_color::BLACK) // Если цвет родителя черный (предыдущий)
 								{
 									continue;
 								}
@@ -635,17 +635,17 @@ tvalue red_black_tree<tkey, tvalue>::dispose_inside(std::stack<typename binary_s
 					}
 					else if (parent->right_subtree == current) // Если текущий узел является правым потомком родителя
 					{
-						if (static_cast<node *>(parent->left_subtree)->_color == node_color::RED) // Если левый потомок родителя красный
+						if (static_cast<node *>(parent->left_subtree)->_color == node_color::RED) // Если брат красный
 						{
 							binary_search_tree<tkey, tvalue>::small_right_rotation(*path.top());
 							static_cast<node *>(*path.top())->change_color(node_color::BLACK);
-							static_cast<node *>((*path.top())->right_subtree)->change_color(node_color::RED); // Меняем цвет правого потомка родителя на красный
+							static_cast<node *>((*path.top())->right_subtree)->change_color(node_color::RED); // Меняем цвет брата на красный
 							path.push(&((*path.top())->right_subtree));
 							typename binary_search_tree<tkey, tvalue>::node *removable = (*path.top())->right_subtree;
 							path.push(&(removable));
 							continue;
 						}
-						else if (static_cast<node *>(parent->left_subtree)->_color == node_color::BLACK) // Если левый потомок родителя черный
+						else if (static_cast<node *>(parent->left_subtree)->_color == node_color::BLACK) // Если брат черный
 						{
 							brother = parent->left_subtree;
 
@@ -689,9 +689,9 @@ tvalue red_black_tree<tkey, tvalue>::dispose_inside(std::stack<typename binary_s
 
 								node_color parent_color = static_cast<node *>(parent)->_color;
 								binary_search_tree<tkey, tvalue>::small_right_rotation(*path.top());
-								static_cast<node *>(*path.top())->change_color(parent_color); // Меняем цвет родителя на его первоначальный цвет
-								static_cast<node *>((*path.top())->left_subtree)->change_color(node_color::BLACK); // Меняем цвет левого потомка родителя на черный
-								static_cast<node *>((*path.top())->right_subtree)->change_color(node_color::BLACK); // Меняем цвет правого потомка родителя на черный
+								static_cast<node *>(*path.top())->change_color(parent_color);
+								static_cast<node *>((*path.top())->left_subtree)->change_color(node_color::BLACK);
+								static_cast<node *>((*path.top())->right_subtree)->change_color(node_color::BLACK);
 								break;
 							}
 							else if (static_cast<node *>(brother->right_subtree)->_color == node_color::RED &&
@@ -699,15 +699,15 @@ tvalue red_black_tree<tkey, tvalue>::dispose_inside(std::stack<typename binary_s
 									  static_cast<node *>(brother->left_subtree)->_color == node_color::BLACK)) // Если правый потомок брата красный и левый потомок черный
 							{
 								binary_search_tree<tkey, tvalue>::small_left_rotation((*path.top())->left_subtree);
-								static_cast<node *>((*path.top())->left_subtree)->change_color(node_color::BLACK); // Меняем цвет левого потомка родителя на черный
-								static_cast<node *>((*path.top())->left_subtree->left_subtree)->change_color(node_color::RED); // Меняем цвет левого потомка левого потомка родителя на красный
+								static_cast<node *>((*path.top())->left_subtree)->change_color(node_color::BLACK);
+								static_cast<node *>((*path.top())->left_subtree->left_subtree)->change_color(node_color::RED);
 								path.push(&((*path.top())->right_subtree));
 								continue;
 							}
 						}
 					}
 				}
-				need_continue = false; // Устанавливаем флаг продолжения в false
+				need_continue = false;
 			}
 		}
 	}
