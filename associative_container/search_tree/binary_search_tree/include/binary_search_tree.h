@@ -857,7 +857,6 @@ protected:
 		{
 			std::vector<typename associative_container<tkey, tvalue>::key_value_pair> range;
 
-			// TODO: this should be computed
 			std::stack<node *> path;
 			node *current = this->_tree->_root;
 			while (true)
