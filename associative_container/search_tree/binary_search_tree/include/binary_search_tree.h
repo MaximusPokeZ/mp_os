@@ -3673,7 +3673,8 @@ void binary_search_tree<tkey, tvalue>::small_right_rotation(
 	if (son_left)
 	{
 		subtree_root = subtree_root->left_subtree;
-	} else if (son_right)
+	}
+	else if (son_right)
 	{
 		subtree_root = subtree_root->right_subtree;
 	}
@@ -3762,13 +3763,13 @@ template<
 void binary_search_tree<tkey, tvalue>::double_right_rotation(
 		binary_search_tree<tkey, tvalue>::node *&subtree_root,
 		bool son_left,
-		bool son_right
-) const
+		bool son_right) const
 {
 	if (son_left)
 	{
 		subtree_root = subtree_root->left_subtree;
-	} else if (son_right)
+	}
+	else if (son_right)
 	{
 		subtree_root = subtree_root->right_subtree;
 	}

@@ -172,17 +172,9 @@ TEST(scapegoatTreePositiveTests, test1)
 
 	logger->trace("scapegoatTreePositiveTests.test1 started");
 
-	//auto all = std::make_unique<allocator_sorted_list>(10000);
-	//auto all = std::make_unique<allocator_buddies_system>(14);
-	//auto alll = new allocator_global_heap(nullptr);
 	auto all = std::make_unique<allocator_boundary_tags>(10000);
 
 	auto sg = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), all.get(), nullptr, 0.7);
-	//search_tree<int, std::string> *bst = new binary_search_tree<int, std::string>(key_comparer(), nullptr, nullptr);
-	//auto sg = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), alll, nullptr, 0.7);
-
-
-	//search_tree<int, std::string> *sg = new scapegoat_tree<int, std::string>(key_comparer(), nullptr, logger, 0.7);
 
 	sg->insert(5, "a");
 	sg->insert(2, "b");
@@ -205,7 +197,6 @@ TEST(scapegoatTreePositiveTests, test1)
 
 	logger->trace("scapegoatTreePositiveTests.test1 finished");
 
-	//delete sg;
 	delete logger;
 }
 
@@ -221,17 +212,9 @@ TEST(scapegoatTreePositiveTests, test2)
 
 	logger->trace("scapegoatTreePositiveTests.test2 started");
 
-	//auto all = std::make_unique<allocator_sorted_list>(10000);
 	auto all = std::make_unique<allocator_buddies_system>(14);
-	//auto alll = new allocator_global_heap(nullptr);
-	//auto all = std::make_unique<allocator_boundary_tags>(10000);
 
 	auto sg = std::make_unique<scapegoat_tree<int, int>>(key_comparer(), all.get(), nullptr, 0.5);
-	//search_tree<int, std::string> *bst = new binary_search_tree<int, std::string>(key_comparer(), nullptr, nullptr);
-	//auto sg = std::make_unique<scapegoat_tree<int, int>>(key_comparer(), alll, nullptr, 0.5);
-
-
-	//search_tree<int, int> *sg = new scapegoat_tree<int, int>(key_comparer(), nullptr, logger, 0.5);
 
 	sg->insert(1, 5);
 	sg->insert(2, 12);
@@ -252,7 +235,6 @@ TEST(scapegoatTreePositiveTests, test2)
 
 	logger->trace("scapegoatTreePositiveTests.test2 finished");
 
-	//delete sg;
 	delete logger;
 }
 
@@ -269,16 +251,8 @@ TEST(scapegoatTreePositiveTests, test3)
 	logger->trace("scapegoatTreePositiveTests.test3 started");
 
 	auto all = std::make_unique<allocator_sorted_list>(10000);
-	//auto all = std::make_unique<allocator_buddies_system>(14);
-	//auto alll = new allocator_global_heap(nullptr);
-	//auto all = std::make_unique<allocator_boundary_tags>(10000);
 
 	auto sg = std::make_unique<scapegoat_tree<std::string, int>>(key_comparer(), all.get(), nullptr, 0.9);
-	//search_tree<int, std::string> *bst = new binary_search_tree<int, std::string>(key_comparer(), nullptr, nullptr);
-	//auto sg = std::make_unique<scapegoat_tree<std::string, int>>(key_comparer(), alll, nullptr, 0.9);
-
-
-	//search_tree<std::string, int> *sg = new scapegoat_tree<std::string, int>(key_comparer(), nullptr, logger, 0.9);
 
 	sg->insert("a", 1);
 	sg->insert("b", 2);
@@ -299,7 +273,6 @@ TEST(scapegoatTreePositiveTests, test3)
 
 	logger->trace("scapegoatTreePositiveTests.test3 finished");
 
-	//delete sg;
 	delete logger;
 }
 
@@ -315,17 +288,11 @@ TEST(scapegoatTreePositiveTests, test4)
 
 	logger->trace("scapegoatTreePositiveTests.test4 started");
 
-	//auto all = std::make_unique<allocator_sorted_list>(10000);
-	//auto all = std::make_unique<allocator_buddies_system>(14);
-	auto alll = new allocator_global_heap(nullptr);
-	//auto all = std::make_unique<allocator_boundary_tags>(10000);
 
-	//auto sg1 = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), all.get(), nullptr, 0.65);
-	//search_tree<int, std::string> *bst = new binary_search_tree<int, std::string>(key_comparer(), nullptr, nullptr);
+	auto alll = new allocator_global_heap(nullptr);
+
 	auto sg1 = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), alll, nullptr, 0.65);
 
-
-	//search_tree<int, std::string> *sg1 = new scapegoat_tree<int, std::string>(key_comparer(), nullptr, logger, 0.65);
 
 	sg1->insert(6, "a");
 	sg1->insert(8, "c");
@@ -350,7 +317,6 @@ TEST(scapegoatTreePositiveTests, test4)
 
 	logger->trace("scapegoatTreePositiveTests.test4 finished");
 
-	//delete sg1;
 	delete logger;
 }
 
@@ -366,17 +332,10 @@ TEST(scapegoatTreePositiveTests, test5)
 
 	logger->trace("scapegoatTreePositiveTests.test5 started");
 
-	//auto all = std::make_unique<allocator_sorted_list>(10000);
-	//auto all = std::make_unique<allocator_buddies_system>(14);
-	//auto alll = new allocator_global_heap(nullptr);
 	auto all = std::make_unique<allocator_boundary_tags>(10000);
 
 	auto sg1 = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), all.get(), nullptr, 0.65);
-	//search_tree<int, std::string> *bst = new binary_search_tree<int, std::string>(key_comparer(), nullptr, nullptr);
-	//auto sg1 = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), alll, nullptr, 0.65);
 
-
-	//search_tree<int, std::string> *sg1 = new scapegoat_tree<int, std::string>(key_comparer(), nullptr, logger, 0.65);
 
 	sg1->insert(6, "a");
 	sg1->insert(8, "c");
@@ -402,7 +361,6 @@ TEST(scapegoatTreePositiveTests, test5)
 
 	logger->trace("scapegoatTreePositiveTests.test5 finished");
 
-	//delete sg1;
 	delete logger;
 }
 
@@ -418,17 +376,11 @@ TEST(scapegoatTreePositiveTests, test6)
 
 	logger->trace("scapegoatTreePositiveTests.test6 started");
 
-	//auto all = std::make_unique<allocator_sorted_list>(10000);
 	auto all = std::make_unique<allocator_buddies_system>(14);
-	//auto alll = new allocator_global_heap(nullptr);
-	//auto all = std::make_unique<allocator_boundary_tags>(10000);
+
 
 	auto sg1 = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), all.get(), nullptr, 0.5);
-	//search_tree<int, std::string> *bst = new binary_search_tree<int, std::string>(key_comparer(), nullptr, nullptr);
-	//auto sg = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), alll, nullptr, 0.5);
 
-
-	//search_tree<int, std::string> *sg1 = new scapegoat_tree<int, std::string>(key_comparer(), nullptr, logger, 0.5);
 
 	sg1->insert(6, "a");
 	sg1->insert(8, "c");
@@ -452,7 +404,6 @@ TEST(scapegoatTreePositiveTests, test6)
 
 	logger->trace("scapegoatTreePositiveTests.test6 finished");
 
-	//delete sg1;
 	delete logger;
 }
 
@@ -469,16 +420,8 @@ TEST(scapegoatTreePositiveTests, test7)
 	logger->trace("scapegoatTreePositiveTests.test7 started");
 
 	auto all = std::make_unique<allocator_sorted_list>(10000);
-	//auto all = std::make_unique<allocator_buddies_system>(14);
-	//auto alll = new allocator_global_heap(nullptr);
-	//auto all = std::make_unique<allocator_boundary_tags>(10000);
 
 	auto sg1 = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), all.get(), nullptr, 0.7);
-	//search_tree<int, std::string> *bst = new binary_search_tree<int, std::string>(key_comparer(), nullptr, nullptr);
-	//auto sg1 = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), alll, nullptr, 0.7);
-
-
-	//search_tree<int, std::string> *sg1 = new scapegoat_tree<int, std::string>(key_comparer(), nullptr, logger, 0.7);
 
 	sg1->insert(6, "a");
 	sg1->insert(8, "c");
@@ -504,7 +447,6 @@ TEST(scapegoatTreePositiveTests, test7)
 
 	logger->trace("scapegoatTreePositiveTests.test7 finished");
 
-	//delete sg1;
 	delete logger;
 
 }
@@ -521,17 +463,10 @@ TEST(scapegoatTreePositiveTests, test8)
 
 	logger->trace("scapegoatTreePositiveTests.test8 started");
 
-	//auto all = std::make_unique<allocator_sorted_list>(10000);
-	//auto all = std::make_unique<allocator_buddies_system>(14);
 	auto alll = new allocator_global_heap(nullptr);
-	//auto all = std::make_unique<allocator_boundary_tags>(10000);
 
-	//auto sg1 = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), all.get(), nullptr);
-	//search_tree<int, std::string> *bst = new binary_search_tree<int, std::string>(key_comparer(), nullptr, nullptr);
 	auto sg1 = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), alll, nullptr);
 
-
-	//search_tree<int, std::string> *sg1 = new scapegoat_tree<int, std::string>(key_comparer(), nullptr, logger);
 
 	sg1->insert(6, "a");
 	sg1->insert(8, "c");
@@ -559,7 +494,6 @@ TEST(scapegoatTreePositiveTests, test8)
 
 	logger->trace("scapegoatTreePositiveTests.test8 finished");
 
-	//delete sg1;
 	delete logger;
 }
 
@@ -575,17 +509,9 @@ TEST(scapegoatTreePositiveTests, test9)
 
 	logger->trace("scapegoatTreePositiveTests.test9 started");
 
-	//auto all = std::make_unique<allocator_sorted_list>(10000);
-	//auto all = std::make_unique<allocator_buddies_system>(14);
-	//auto alll = new allocator_global_heap(nullptr);
 	auto all = std::make_unique<allocator_boundary_tags>(10000);
 
 	auto sg1 = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), all.get(), nullptr);
-	//search_tree<int, std::string> *bst = new binary_search_tree<int, std::string>(key_comparer(), nullptr, nullptr);
-	//auto sg1 = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), alll, nullptr);
-
-
-	//search_tree<int, std::string> *sg1 = new scapegoat_tree<int, std::string>(key_comparer(), nullptr, logger);
 
 	sg1->insert(6, "l");
 	sg1->insert(8, "c");
@@ -615,7 +541,6 @@ TEST(scapegoatTreePositiveTests, test9)
 
 	logger->trace("scapegoatTreePositiveTests.test9 finished");
 
-	//delete sg1;
 	delete logger;
 
 }
@@ -632,17 +557,9 @@ TEST(scapegoatTreePositiveTests, test10)
 
 	logger->trace("scapegoatTreePositiveTests.test10 started");
 
-	//auto all = std::make_unique<allocator_sorted_list>(10000);
 	auto all = std::make_unique<allocator_buddies_system>(14);
-	//auto alll = new allocator_global_heap(nullptr);
-	//auto all = std::make_unique<allocator_boundary_tags>(10000);
 
 	auto sg = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), all.get(), nullptr);
-	//search_tree<int, std::string> *bst = new binary_search_tree<int, std::string>(key_comparer(), nullptr, nullptr);
-	//auto sg = std::make_unique<scapegoat_tree<int, std::string>>(key_comparer(), alll, nullptr);
-
-
-	//search_tree<int, std::string> *sg = new scapegoat_tree<int, std::string>(key_comparer(), nullptr, logger);
 
 	sg->insert(6, "l");
 	sg->insert(8, "c");
@@ -668,7 +585,6 @@ TEST(scapegoatTreePositiveTests, test10)
 
 	logger->trace("scapegoatTreePositiveTests.test10 finished");
 
-	//delete sg;
 	delete logger;
 }
 
