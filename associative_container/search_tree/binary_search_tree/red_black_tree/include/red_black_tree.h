@@ -315,7 +315,9 @@ void red_black_tree<tkey, tvalue>::insert_inside(const tkey &key, tvalue&& value
 	red_black_insert(key, std::move(value), path);
 }
 
-template<typename tkey, typename tvalue>
+template<
+	typename tkey,
+	typename tvalue>
 void red_black_tree<tkey, tvalue>::remove_node_with_two_children(std::stack<typename binary_search_tree<tkey, tvalue>::node **> &path)
 {
 	node * current_node = static_cast<node*> (*path.top());
@@ -388,7 +390,7 @@ void red_black_tree<tkey, tvalue>::red_black_insert(const tkey &key, rb_tvalue &
 
 		if (parent == grandparent->left_subtree)
 		{
-			if (get_color(uncle) == node_color::RED) // 2 случай - дядя узла красный --> отец и дядя - черные; дедушка - красный
+			if (get_color(uncle) == node_color::RED) // 1 случай - дядя узла красный --> отец и дядя - черные; дедушка - красный
 			{
 				parent->change_color(node_color::BLACK);
 				uncle->change_color(node_color::BLACK);

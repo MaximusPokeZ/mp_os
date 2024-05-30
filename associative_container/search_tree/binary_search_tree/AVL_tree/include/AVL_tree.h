@@ -125,12 +125,12 @@ private:
 
 	void insert_inside(const tkey& key, tvalue&& value, std::stack<typename binary_search_tree<tkey, tvalue>::node**>& stack) override;
 
-	tvalue dispose_inside(std::stack<typename binary_search_tree<tkey, tvalue>::node**>& stack) override;
+	tvalue dispose_inside(std::stack<typename binary_search_tree<tkey, tvalue>::node**>& path) override;
 
 	void copy_subtree(typename binary_search_tree<tkey, tvalue>::node** target, typename binary_search_tree<tkey, tvalue>::node* src);
 
 	template<typename avl_tvalue>
-	void avl_insert(const tkey& key, avl_tvalue&& value, std::stack<typename binary_search_tree<tkey, tvalue>::node**>& stack);
+	void avl_insert(const tkey& key, avl_tvalue&& value, std::stack<typename binary_search_tree<tkey, tvalue>::node**>& path);
 
 	typename binary_search_tree<tkey,tvalue>::iterator_data *create_iterator_data() const override;
 
@@ -368,78 +368,81 @@ void AVL_tree<tkey, tvalue>::insert_inside(const tkey &key, tvalue&& value,std::
 	avl_insert(key, std::move(value), stack);
 }
 
-template<typename tkey, typename tvalue>
+template<
+        typename tkey,
+		typename tvalue>
 template<typename avl_tvalue>
-void AVL_tree<tkey, tvalue>::avl_insert(const tkey &key, avl_tvalue &&value, std::stack<typename binary_search_tree<tkey, tvalue>::node**> & stack)
+void AVL_tree<tkey, tvalue>::avl_insert(const tkey &key, avl_tvalue &&value, std::stack<typename binary_search_tree<tkey, tvalue>::node**> & path)
 {
-	(*stack.top()) = static_cast<typename binary_search_tree<tkey, tvalue>::node*>(static_cast<node*>(allocator_guardant::allocate_with_guard(sizeof(node), 1)));
+	(*path.top()) = static_cast<typename binary_search_tree<tkey, tvalue>::node*>(static_cast<node*>(allocator_guardant::allocate_with_guard(sizeof(node), 1)));
 
-	try {
-		allocator::construct(*stack.top(), key, std::forward<avl_tvalue>(value));
-	}
-	catch(...)
+	try
 	{
-		allocator_guardant::deallocate_with_guard(*stack.top());
-		throw;
+		allocator::construct(*path.top(), key, std::forward<avl_tvalue>(value));
+	}
+	catch(std::bad_alloc & ex)
+	{
+		allocator_guardant::deallocate_with_guard(*path.top());
+		throw ex;
 	}
 
-	static_cast<node*>(*stack.top())->change_balance();
+	static_cast<node*>(*path.top())->change_balance();
 
-	while (!stack.empty())
+	while (!path.empty())
 	{
-		static_cast<node*>(*stack.top())->change_balance();
+		static_cast<node*>(*path.top())->change_balance();
 
-		int balance = static_cast<node*>(*stack.top())->get_balance();
+		int balance = static_cast<node*>(*path.top())->get_balance();
 
-		if (balance > 1 && (*stack.top())->right_subtree != nullptr && (*stack.top())->right_subtree->left_subtree != nullptr)
+		if (balance > 1 && (*path.top())->right_subtree != nullptr && (*path.top())->right_subtree->left_subtree != nullptr)
 		{
-			binary_search_tree<tkey, tvalue>::big_left_rotation(*stack.top());
-			static_cast<node*>((*stack.top())->binary_search_tree<tkey, tvalue>::node::left_subtree)->change_balance();
-			static_cast<node*>((*stack.top())->binary_search_tree<tkey, tvalue>::node::right_subtree)->change_balance();
-			static_cast<node*>((*stack.top()))->change_balance();
+			binary_search_tree<tkey, tvalue>::big_left_rotation(*path.top());
+			static_cast<node*>((*path.top())->binary_search_tree<tkey, tvalue>::node::left_subtree)->change_balance();
+			static_cast<node*>((*path.top())->binary_search_tree<tkey, tvalue>::node::right_subtree)->change_balance();
+			static_cast<node*>((*path.top()))->change_balance();
 
 		}
 		else if (balance > 1)
 		{
-			binary_search_tree<tkey, tvalue>::small_left_rotation(*stack.top());
-			static_cast<node*>((*stack.top())->binary_search_tree<tkey, tvalue>::node::left_subtree)->change_balance();
-			static_cast<node*>((*stack.top()))->change_balance();
+			binary_search_tree<tkey, tvalue>::small_left_rotation(*path.top());
+			static_cast<node*>((*path.top())->binary_search_tree<tkey, tvalue>::node::left_subtree)->change_balance();
+			static_cast<node*>((*path.top()))->change_balance();
 		}
-		else if (balance < -1 && (*stack.top())->left_subtree != nullptr && (*stack.top())->left_subtree->right_subtree != nullptr)
+		else if (balance < -1 && (*path.top())->left_subtree != nullptr && (*path.top())->left_subtree->right_subtree != nullptr)
 		{
-			binary_search_tree<tkey, tvalue>::big_right_rotation(*stack.top());
-			static_cast<node*>((*stack.top())->binary_search_tree<tkey, tvalue>::node::left_subtree)->change_balance();
-			static_cast<node*>((*stack.top())->binary_search_tree<tkey, tvalue>::node::right_subtree)->change_balance();
-			static_cast<node*>((*stack.top()))->change_balance();
+			binary_search_tree<tkey, tvalue>::big_right_rotation(*path.top());
+			static_cast<node*>((*path.top())->binary_search_tree<tkey, tvalue>::node::left_subtree)->change_balance();
+			static_cast<node*>((*path.top())->binary_search_tree<tkey, tvalue>::node::right_subtree)->change_balance();
+			static_cast<node*>((*path.top()))->change_balance();
 		}
 		else if (balance < -1)
 		{
-			binary_search_tree<tkey, tvalue>::small_right_rotation(*stack.top());
-			static_cast<node*>((*stack.top())->binary_search_tree<tkey, tvalue>::node::right_subtree)->change_balance();
-			static_cast<node*>((*stack.top()))->change_balance();
+			binary_search_tree<tkey, tvalue>::small_right_rotation(*path.top());
+			static_cast<node*>((*path.top())->binary_search_tree<tkey, tvalue>::node::right_subtree)->change_balance();
+			static_cast<node*>((*path.top()))->change_balance();
 		}
 
-		stack.pop();
+		path.pop();
 	}
 }
 
 template<typename tkey, typename tvalue>
-tvalue AVL_tree<tkey, tvalue>::dispose_inside(std::stack<typename binary_search_tree<tkey, tvalue>::node**>& stack)
+tvalue AVL_tree<tkey, tvalue>::dispose_inside(std::stack<typename binary_search_tree<tkey, tvalue>::node**>& path)
 {
-	tvalue res = (*stack.top())->value;
+	tvalue res = (*path.top())->value;
 
-	typename binary_search_tree<tkey, tvalue>::node* current_node = *stack.top();
+	typename binary_search_tree<tkey, tvalue>::node* current_node = *path.top();
 
 	if (current_node->left_subtree == nullptr && current_node->right_subtree == nullptr)
 	{
-		*stack.top() = nullptr;
-		stack.pop();
+		*path.top() = nullptr;
+		path.pop();
 	}
 	else
 	{
 		if (current_node->right_subtree == nullptr || current_node->left_subtree == nullptr)
 		{
-			*stack.top() = current_node->right_subtree != nullptr ? current_node->right_subtree : current_node->left_subtree;
+			*path.top() = current_node->right_subtree != nullptr ? current_node->right_subtree : current_node->left_subtree;
 		}
 		else
 		{
@@ -452,23 +455,19 @@ tvalue AVL_tree<tkey, tvalue>::dispose_inside(std::stack<typename binary_search_
 				que.push(update);
 			}
 
-			*stack.top() = *update;
+			*path.top() = *update;
 			*update = (*update)->left_subtree;
-			(*stack.top())->left_subtree = current_node->left_subtree;
-			(*stack.top())->right_subtree = current_node->right_subtree;
+			(*path.top())->left_subtree = current_node->left_subtree;
+			(*path.top())->right_subtree = current_node->right_subtree;
 
 			if (!que.empty())
 			{
-				stack.push(&(*stack.top())->left_subtree);
+				path.push(&(*path.top())->left_subtree);
 			}
 
-			while (!que.empty())
+			while (que.size() > 1)
 			{
-				if (que.size() == 1)
-				{
-					break;
-				}
-				stack.push(que.front());
+				path.push(que.front());
 				que.pop();
 			}
 		}
@@ -477,9 +476,9 @@ tvalue AVL_tree<tkey, tvalue>::dispose_inside(std::stack<typename binary_search_
 	allocator::destruct(current_node);
 	allocator_guardant::deallocate_with_guard(current_node);
 
-	while (!stack.empty())
+	while (!path.empty())
 	{
-		typename binary_search_tree<tkey, tvalue>::node* current = *stack.top();
+		typename binary_search_tree<tkey, tvalue>::node* current = *path.top();
 		static_cast<node*>(current)->change_balance();
 		int balance = static_cast<node*>(current)->get_balance();
 
@@ -488,16 +487,16 @@ tvalue AVL_tree<tkey, tvalue>::dispose_inside(std::stack<typename binary_search_
 			int child_balance = static_cast<node*>(current->left_subtree)->get_balance();
 			if (child_balance >= 0)
 			{
-				binary_search_tree<tkey, tvalue>::small_left_rotation(*stack.top());
-				static_cast<node*>((*stack.top())->binary_search_tree<tkey, tvalue>::node::left_subtree)->change_balance();
-				static_cast<node*>((*stack.top()))->change_balance();
+				binary_search_tree<tkey, tvalue>::small_left_rotation(*path.top());
+				static_cast<node*>((*path.top())->binary_search_tree<tkey, tvalue>::node::left_subtree)->change_balance();
+				static_cast<node*>((*path.top()))->change_balance();
 			}
 			else
 			{
-				binary_search_tree<tkey, tvalue>::big_right_rotation(*stack.top());
-				static_cast<node*>((*stack.top())->binary_search_tree<tkey, tvalue>::node::left_subtree)->change_balance();
-				static_cast<node*>((*stack.top())->binary_search_tree<tkey, tvalue>::node::right_subtree)->change_balance();
-				static_cast<node*>((*stack.top()))->change_balance();
+				binary_search_tree<tkey, tvalue>::big_right_rotation(*path.top());
+				static_cast<node*>((*path.top())->binary_search_tree<tkey, tvalue>::node::left_subtree)->change_balance();
+				static_cast<node*>((*path.top())->binary_search_tree<tkey, tvalue>::node::right_subtree)->change_balance();
+				static_cast<node*>((*path.top()))->change_balance();
 			}
 		}
 		else if (balance < -1)
@@ -505,19 +504,19 @@ tvalue AVL_tree<tkey, tvalue>::dispose_inside(std::stack<typename binary_search_
 			int child_balance = static_cast<node*>(current->right_subtree)->get_balance();
 			if (child_balance <= 0)
 			{
-				binary_search_tree<tkey, tvalue>::small_right_rotation(*stack.top());
-				static_cast<node*>((*stack.top())->binary_search_tree<tkey, tvalue>::node::right_subtree)->change_balance();
-				static_cast<node*>((*stack.top()))->change_balance();
+				binary_search_tree<tkey, tvalue>::small_right_rotation(*path.top());
+				static_cast<node*>((*path.top())->binary_search_tree<tkey, tvalue>::node::right_subtree)->change_balance();
+				static_cast<node*>((*path.top()))->change_balance();
 			}
 			else
 			{
-				binary_search_tree<tkey, tvalue>::big_left_rotation(*stack.top());
-				static_cast<node*>((*stack.top())->binary_search_tree<tkey, tvalue>::node::left_subtree)->change_balance();
-				static_cast<node*>((*stack.top())->binary_search_tree<tkey, tvalue>::node::right_subtree)->change_balance();
-				static_cast<node*>((*stack.top()))->change_balance();
+				binary_search_tree<tkey, tvalue>::big_left_rotation(*path.top());
+				static_cast<node*>((*path.top())->binary_search_tree<tkey, tvalue>::node::left_subtree)->change_balance();
+				static_cast<node*>((*path.top())->binary_search_tree<tkey, tvalue>::node::right_subtree)->change_balance();
+				static_cast<node*>((*path.top()))->change_balance();
 			}
 		}
-		stack.pop();
+		path.pop();
 	}
 
 	return res;
