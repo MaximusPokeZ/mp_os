@@ -4,7 +4,8 @@ project(mp_os_assctv_cntnr_srch_tr_bnr_srch_tr_scpgt_tr)
 add_subdirectory(tests)
 add_library(
         mp_os_assctv_cntnr_srch_tr_bnr_srch_tr_scpgt_tr
-        include/scapegoat_tree.h)
+        include/scapegoat_tree.h
+        src/ok.cpp)
 target_include_directories(
         mp_os_assctv_cntnr_srch_tr_bnr_srch_tr_scpgt_tr
         PUBLIC
@@ -33,7 +34,7 @@ set_target_properties(
         mp_os_assctv_cntnr_srch_tr_bnr_srch_tr_rb_tr PROPERTIES
         LANGUAGES CXX
         LINKER_LANGUAGE CXX
-        CXX_STANDARD 14
+        CXX_STANDARD 23
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
         VERSION 1.0

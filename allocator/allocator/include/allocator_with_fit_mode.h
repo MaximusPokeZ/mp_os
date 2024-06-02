@@ -11,14 +11,14 @@ public:
     
     enum class fit_mode
     {
-        first_fit,
-        the_best_fit,
-        the_worst_fit
+        first_fit, //первый подходящий
+        the_best_fit, // наилучший
+        the_worst_fit // наихудший
     };
 
 public:
     
-    inline virtual void set_fit_mode(
+    inline virtual void set_fit_mode( // установка режима
         fit_mode mode) = 0;
     
 };
