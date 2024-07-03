@@ -151,33 +151,24 @@ allocator_sorted_list::allocator_sorted_list(
 	return reinterpret_cast<unsigned char*>(cur_loaded_block) + get_block_size_of_meta();
 }
 
-void allocator_sorted_list::deallocate(
-		void *at)
+void allocator_sorted_list::deallocate(void *at)
 {
 	std::lock_guard lock(get_mutex());
-
-	debug_with_guard("Start deallocate " + get_typename());
 
 	void* block_ptr = reinterpret_cast<unsigned char*>(at) - get_block_size_of_meta();
 
 	if(get_ptr_to_block_from_block(block_ptr) != _trusted_memory)
-	{
-		error_with_guard("Invalid memory block");
 		throw std::logic_error("Logic error: The received memory block does not belong to this allocator");
-	}
-
-	debug_with_guard("This block before deallocate " + get_dump(reinterpret_cast<char*>(at), get_size_block(block_ptr)));
 
 	block_pointer_t previous_free = get_previous_for_loaded(block_ptr);
 	void* next_free;
 
-	if(previous_free == _trusted_memory)
-		next_free = get_first_block(_trusted_memory);
-	else
-		next_free = get_ptr_to_block_from_block(previous_free);
+	if(previous_free == _trusted_memory) next_free = get_first_block(_trusted_memory);
+	else next_free = get_ptr_to_block_from_block(previous_free);
 
 
-	if(next_free != nullptr && reinterpret_cast<void*>(reinterpret_cast<unsigned char*>(block_ptr) + get_block_size_of_meta() + get_size_block(block_ptr)) == next_free)
+	if(next_free != nullptr && reinterpret_cast<void*>(reinterpret_cast<unsigned char*>(block_ptr) + get_block_size_of_meta()
+			+ get_size_block(block_ptr)) == next_free)
 	{
 		auto byte_ptr = reinterpret_cast<unsigned char*>(block_ptr);
 		*reinterpret_cast<size_t*>(byte_ptr) = get_size_block(block_ptr) + get_block_size_of_meta() + get_size_block(next_free);
@@ -186,22 +177,14 @@ void allocator_sorted_list::deallocate(
 	}
 	else
 	{
-		if (block_ptr == _trusted_memory)
-			get_first_block(_trusted_memory) = next_free;
-		else
-			get_ptr_to_block_from_block(block_ptr) = next_free;
+		if (block_ptr == _trusted_memory) get_first_block(_trusted_memory) = next_free;
+		else get_ptr_to_block_from_block(block_ptr) = next_free;
 	}
 
 	if (previous_free == _trusted_memory)
 		get_first_block(_trusted_memory) = block_ptr;
 	else
 		get_ptr_to_block_from_block(previous_free) = block_ptr;
-
-
-	left_bytes += get_size_block(block_ptr);
-
-	debug_with_guard("Deallocation completed. Deallocated memory size: " + std::to_string(get_block_size_of_meta() + get_size_block(block_ptr)) + " bytes. Current available memory : " + std::to_string(left_bytes) + " bytes");
-	information_with_guard(get_typename() + " current state of blocks: " + get_blocks_info_to_string(get_blocks_info()));
 }
 
 inline void allocator_sorted_list::set_fit_mode(
