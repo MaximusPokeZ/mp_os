@@ -22,7 +22,7 @@ public:
         typename T,
         typename ...args>
     inline static void construct(
-        T *at,
+        T *at, // указатель на место в памяти, где нужно создать объект
         args... constructor_arguments);
     
     template<
@@ -33,8 +33,8 @@ public:
 public:
     
     [[nodiscard]] virtual void *allocate(
-        size_t value_size,
-        size_t values_count) = 0;
+        size_t value_size, // размер одного элемента
+        size_t values_count) = 0; // кол-во элементов, которые надо выделить
     
     virtual void deallocate(
         void *at) = 0;

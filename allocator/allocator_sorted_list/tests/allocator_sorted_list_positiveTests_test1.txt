@@ -1,0 +1,6 @@
+allocator_sorted_listcurrent state of blocks: <occup><1000> | <avail><1968> | 
+allocator_sorted_listcurrent state of blocks: <occup><1000> | <occup><1000> | <avail><952> | 
+allocator_sorted_list current state of blocks: <avail><1000> | <occup><1000> | <avail><952> | 
+allocator_sorted_listcurrent state of blocks: <occup><980> | <avail><4> | <occup><1000> | <avail><952> | 
+allocator_sorted_list current state of blocks: <occup><980> | <avail><4> | <avail><1968> | 
+allocator_sorted_list current state of blocks: <avail><1000> | <avail><1968> | 

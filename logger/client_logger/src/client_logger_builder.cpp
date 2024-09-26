@@ -97,13 +97,11 @@ void client_logger_builder::parsing_severity(logger::severity severity, nlohmann
 	auto path_iter = js.find("path");
 	if (path_iter != js.end() && path_iter->is_array())
 	{
-		// Итерируемся по массиву путей
 		nlohmann::json array = *path_iter;
 		for (const nlohmann::json& obj : array)
 		{
 			if (!obj.is_string() || obj.empty()) { continue; }
 
-			// Получаем абсолютный путь к файлу и добавляем его в список для данного уровня серьезности
 			std::string stream_file_path = obj.get<std::string>();
 			it->second.first.emplace_front(std::filesystem::weakly_canonical(stream_file_path).string(), nullptr);
 		}

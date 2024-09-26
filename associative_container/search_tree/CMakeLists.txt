@@ -2,10 +2,11 @@ cmake_minimum_required(VERSION 3.21)
 project(mp_os_assctv_cntnr_srch_tr)
 
 add_subdirectory(binary_search_tree)
-#add_subdirectory(indexing_tree)
+add_subdirectory(indexing_tree)
 add_library(
         mp_os_assctv_cntnr_srch_tr
-        include/search_tree.h)
+        include/search_tree.h
+        src/ok.cpp)
 target_include_directories(
         mp_os_assctv_cntnr_srch_tr
         PUBLIC
@@ -33,6 +34,6 @@ set_target_properties(
         LANGUAGES CXX
         LINKER_LANGUAGE CXX
         LINKER_LANGUAGE CXX
-        CXX_STANDARD 14
+        CXX_STANDARD 23
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF)
